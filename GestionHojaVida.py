@@ -5,26 +5,33 @@ cvs = {"Documento" : {"Datos Personales": {"Nombre" : "", "Telefono" : "", "Dire
        "Referencias" : [["nombrer", "relacion", "telefono"]], 
        "Certificaciones" : [["certificado"]],
        "Habilidades" : {"comunicacion"}}}
+
 import datetime
 
-#{Identificación : {Educación: [[...]], Experiencia lab: [[...]], datos únicos: {correos, habilidades globales..}, datos pers: (fecha nacimiento)}}
-#Función para registrar hojas de vida
+def num_int(message):
+    while True:
+        value = input(message)
+        if value.isdigit():
+            return int(value)
+        else:
+            print("Debe ingresar solo números.")
+
 def add_cv():
     print("DATOS PERSONALES")
-    id = input("Número de documento: ")
+    id = num_int("Número de documento: ")
     if id in cvs:
         print("El documento de identidad ya está relacionado a una hoja de vida existente.")
     else:
         cvs[id] = {"Datos Personales" : {}, "Estudios" : [], "Experiencia" : [], "Referencias" : [], "Certificaciones" : [], "Habilidades" : set(),}
         #Datos personales
         name = input("Nombre completo: ")
-        contact = input("Número de contacto: ")
+        contact = num_int("Número de contacto: ")
         addres = input("Dirección: ")
         email = input("Correo electrónico: ")
         print("Fecha de nacimiento")
-        yeardate = int(input("Año: "))
-        month = int(input("Mes: "))
-        day = int(input("Día: "))
+        yeardate = num_int("Año: ")
+        month = num_int("Mes: ")
+        day = num_int("Día: ")
         birthdate = datetime.date(yeardate,month,day)
         actu = datetime.date.today().year
         age = actu - yeardate
@@ -49,10 +56,12 @@ def add_cv():
     # Experiencia laboral
     print("EXPERIENCIA LABORAL")
     while True:
-        company = input("nombre de la empresa: ")
-        position = input("cargo en la empresa: ")
-        functions = input("funciones que desempeñaba: ")
-        period = input("periodo en el que trabajó: ")
+        company = input("Nombre de la empresa: ")
+        position = input("Cargo en la empresa: ")
+        functions = input("Funciones que desempeñaba: ")
+        period2 = num_int("Año de inicio: ")
+        period1 = num_int("Año de finalización: ")
+        period = f"{period2} - {period1}"
         experiencia = [company, position, functions, period]
         cvs[id]["Experiencia"].append(experiencia)
 
@@ -64,9 +73,9 @@ def add_cv():
     #Referencias personales
     print("REFERENCIAS PERSONALES")
     while True:
-        ref = input("nombre de su referencia personal: ")
-        relationship = input("relacion tiene: ")
-        phone = input("numero de telefono de su referencia personal: ")
+        ref = input("Referencia personal: ")
+        relationship = input("Relacion: ")
+        phone = num_int("Numero de telefono: ")
         referencias = [ref, relationship, phone]
         cvs[id]["Referencias"].append(referencias)
 
@@ -80,7 +89,7 @@ def add_cv():
     while True:
         institute_c = input("Institucion")
         name_certificate = input("Nombre del certificado: ")
-        year_certificate = input("Añoi de realización: ")
+        year_certificate = num_int("Año de realización: ")
         certificates = [institute_c,name_certificate,year_certificate]
         cvs[id]["Certificaciones"].append(certificates)
 
@@ -99,13 +108,20 @@ def add_cv():
             break
         
 add_cv()
-
-
-
-
-
-
-
+def filter_cv():
+    print("Ingrese la opción por la que desea filtrar la información\n1. Experiencia\n2. Formación\n3. Habilidades")
+    opt = num_int("")
+    match opt:
+        case 1:
+            search_exp = num_int("Ingrese los años de experiencia por los que desea filtrar: ")
+            for i in cvs:
+                for x in [i]["Experiencia"][3]:
+                    years = x.split("-")
+                    exp = int(years[1]) - (years[2])
+                    if exp == search_exp:
+                        print(cvs[i]) ## Aca va lo hoja organizada
+                    else:
+                        continue
 
 
 
