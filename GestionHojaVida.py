@@ -107,24 +107,43 @@ def add_cv():
         if more != "s":
             break
         
-add_cv()
 def filter_cv():
     print("Ingrese la opción por la que desea filtrar la información\n1. Experiencia\n2. Formación\n3. Habilidades")
     opt = num_int("")
     match opt:
         case 1:
+            flag = False
             search_exp = num_int("Ingrese los años de experiencia por los que desea filtrar: ")
-            for i in cvs:
-                for x in [i]["Experiencia"][3]:
-                    years = x.split("-")
-                    exp = int(years[1]) - (years[2])
+            for id_cv, datos in cvs.items():
+                for experience in datos['Experiencia']:
+                    years = experience[3].split("-")
+                    exp = int(years[1]) - int(years[0])
                     if exp == search_exp:
-                        print(cvs[i]) ## Aca va lo hoja organizada
-                    else:
-                        continue
+                        print(cvs[id_cv]) ## Aca va la hoja organizada
+                        flag = True
+            if not flag:
+                print("Ninguna de las hojas de vida cumple con el filtro")
 
-
-
+        case 2:
+            flag = False
+            search_ed = str(input("Ingrese el título que desea buscar: "))
+            for id_cv, datos in cvs.items():
+                for study in datos["Estudios"]:
+                    if search_ed in study:
+                        print(cvs[id_cv]) ## Aca va la hoja organizada
+                        flag = True
+            if not flag:
+                print("Ninguna de las hojas de vida cumple con el filtro")
+        case 3:
+            flag = False
+            search_sk = str(input("Ingrese la habilidad que desea buscar: "))
+            for id_cv, datos in cvs.items():
+                for skill in datos["Habilidades"]:
+                    if search_sk in skill:
+                        print(cvs[id_cv]) ## Aca va la hoja organizada
+                        flag = True
+            if not flag:
+                print("Ninguna de las hojas de vida cumple con el filtro")
 
 
 
